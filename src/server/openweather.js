@@ -1,5 +1,14 @@
 const BASE_URL = 'https://api.openweathermap.org';
 
+// Errores conocidos: INVALID_KEY (clave no válida), NETWORK (no se llega a OpenWeatherMap), UPSTREAM (otro fallo suyo).
+export class WeatherError extends Error {
+  constructor(code) {
+    super(code);
+    this.name = 'WeatherError';
+    this.code = code;
+  }
+}
+
 // Cliente de OpenWeatherMap. Solo lo usa el servidor: la clave nunca llega al navegador.
 export function createOpenWeather({ apiKey, fetchFn = fetch }) {
   async function get(path, params) {
@@ -7,7 +16,14 @@ export function createOpenWeather({ apiKey, fetchFn = fetch }) {
     for (const [key, value] of Object.entries({ ...params, appid: apiKey })) {
       url.searchParams.set(key, String(value));
     }
-    const res = await fetchFn(url);
+    let res;
+    try {
+      res = await fetchFn(url);
+    } catch {
+      throw new WeatherError('NETWORK');
+    }
+    if (res.status === 401) throw new WeatherError('INVALID_KEY');
+    if (!res.ok) throw new WeatherError('UPSTREAM');
     return res.json();
   }
 

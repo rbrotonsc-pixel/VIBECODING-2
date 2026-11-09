@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { searchWeather } from './search.js';
+import { isBlank, searchWeather } from './search.js';
 
 describe('searchWeather', () => {
   it('usa la primera coincidencia y pide su tiempo con sus coordenadas', async () => {
@@ -22,5 +22,28 @@ describe('searchWeather', () => {
       place: { name: 'Madrid', country: 'ES', lat: 40.4, lon: -3.7 },
       current: { temp: 21.4 },
     });
+  });
+});
+
+describe('searchWeather: errores', () => {
+  it('si no hay coincidencias lanza NOT_FOUND y no pide el tiempo', async () => {
+    let currentCalls = 0;
+    const api = {
+      geocode: async () => [],
+      current: async () => {
+        currentCalls += 1;
+      },
+    };
+    await expect(searchWeather(api, 'Ciudadquenoexiste')).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    expect(currentCalls).toBe(0);
+  });
+});
+
+describe('isBlank', () => {
+  it('detecta búsquedas vacías', () => {
+    expect(isBlank('')).toBe(true);
+    expect(isBlank('   ')).toBe(true);
+    expect(isBlank(null)).toBe(true);
+    expect(isBlank('Madrid')).toBe(false);
   });
 });

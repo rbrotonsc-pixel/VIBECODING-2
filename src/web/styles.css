@@ -63,3 +63,13 @@ h1 { margin: 0 0 16px; font-size: 1.6rem; }
 .summary:empty { display: none; }
 
 .summary { margin: 0; font-size: 1.3rem; font-weight: 600; }
+
+.message {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+
+.message:empty { display: none; }

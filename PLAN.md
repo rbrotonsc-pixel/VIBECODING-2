@@ -47,11 +47,11 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 **Objetivo:** avisar con un mensaje claro cuando algo falla.
 
 **Tareas:**
-- [ ] Ciudad inexistente → «No se ha encontrado esa ciudad».
-- [ ] Clave no válida (401) → «La clave de OpenWeatherMap no es válida».
-- [ ] Fallo de red → «No se ha podido conectar».
-- [ ] Con el campo vacío no se hace ninguna petición.
-- [ ] Si una búsqueda falla, se sigue viendo la ciudad que había antes.
+- [x] Ciudad inexistente → «No se ha encontrado esa ciudad».
+- [x] Clave no válida (401) → «La clave de OpenWeatherMap no es válida».
+- [x] Fallo de red → «No se ha podido conectar».
+- [x] Con el campo vacío no se hace ninguna petición.
+- [x] Si una búsqueda falla, se sigue viendo la ciudad que había antes.
 
 **Pruebas:**
 - Una prueba unitaria y una e2e por cada caso.

@@ -46,3 +46,25 @@ describe('createOpenWeather', () => {
     ]);
   });
 });
+
+describe('createOpenWeather: errores', () => {
+  const respond = (status, body = {}) => async () => ({ ok: status < 400, status, json: async () => body });
+
+  it('una clave no válida (401) da el error INVALID_KEY', async () => {
+    const ow = createOpenWeather({ apiKey: 'mala', fetchFn: respond(401, { cod: 401 }) });
+    await expect(ow.current(1, 2)).rejects.toMatchObject({ code: 'INVALID_KEY' });
+  });
+
+  it('cualquier otro error de OpenWeatherMap da el error UPSTREAM', async () => {
+    const ow = createOpenWeather({ apiKey: 'k', fetchFn: respond(500) });
+    await expect(ow.geocode('Madrid')).rejects.toMatchObject({ code: 'UPSTREAM' });
+  });
+
+  it('si no se puede conectar con OpenWeatherMap da el error NETWORK', async () => {
+    const fetchFn = async () => {
+      throw new TypeError('fetch failed');
+    };
+    const ow = createOpenWeather({ apiKey: 'k', fetchFn });
+    await expect(ow.current(1, 2)).rejects.toMatchObject({ code: 'NETWORK' });
+  });
+});
