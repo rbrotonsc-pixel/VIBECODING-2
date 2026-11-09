@@ -14,6 +14,11 @@ export function formatPlace(place) {
   return `${place.name}, ${place.country}`;
 }
 
+// Para la lista de coincidencias: incluye la región si la hay, para distinguir ciudades con el mismo nombre.
+export function formatPlaceOption(place) {
+  return [place.name, place.state, place.country].filter(Boolean).join(', ');
+}
+
 export function formatSummary(place, current) {
   return `${formatPlace(place)} · ${formatTemp(current.temp)}`;
 }

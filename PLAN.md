@@ -80,8 +80,8 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 **Objetivo:** cuando varias ciudades se llaman igual, poder elegir la correcta.
 
 **Tareas:**
-- [ ] Si el geocoding devuelve varias ciudades, mostrar una lista para elegir («Valencia, ES», «Valencia, VE»).
-- [ ] Si devuelve una sola, cargarla directamente.
+- [x] Si el geocoding devuelve varias ciudades, mostrar una lista para elegir («Valencia, ES», «Valencia, VE»).
+- [x] Si devuelve una sola, cargarla directamente.
 
 **Pruebas:**
 - E2e: busco «Valencia», elijo «Valencia, VE» y se pide el tiempo con las coordenadas de esa ciudad.

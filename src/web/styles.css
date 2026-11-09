@@ -78,3 +78,28 @@ h1 { margin: 0 0 16px; font-size: 1.6rem; }
 .sky-icon:empty { display: none; }
 .details { margin: 4px 0 0; color: var(--muted); }
 .details:empty { display: none; }
+
+.choices {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.choices:empty { display: none; }
+
+.choices button {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #c5ceda;
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.choices button:hover { border-color: var(--accent); }

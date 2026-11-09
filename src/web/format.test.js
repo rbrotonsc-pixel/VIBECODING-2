@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDetails, formatPlace, formatSummary, formatTemp, msToKmh } from './format.js';
+import { formatDetails, formatPlace, formatPlaceOption, formatSummary, formatTemp, msToKmh } from './format.js';
 
 describe('formatTemp', () => {
   it('redondea a grados enteros', () => {
@@ -42,5 +42,12 @@ describe('formatDetails', () => {
   it('añade la lluvia si la hay, con coma decimal', () => {
     const lluvia = { ...madrid, conditionId: 500, rain1h: 0.42 };
     expect(formatDetails(lluvia)).toBe('sensación 21 °C · humedad 40 % · viento 18 km/h · Lluvia débil · lluvia 0,4 mm/h');
+  });
+});
+
+describe('formatPlaceOption', () => {
+  it('incluye la región si la hay', () => {
+    expect(formatPlaceOption({ name: 'Valencia', state: 'Carabobo', country: 'VE' })).toBe('Valencia, Carabobo, VE');
+    expect(formatPlaceOption({ name: 'Valencia', state: null, country: 'VE' })).toBe('Valencia, VE');
   });
 });
