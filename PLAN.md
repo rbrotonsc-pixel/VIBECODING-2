@@ -28,10 +28,10 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 **Objetivo:** escribir una ciudad y ver su temperatura actual. Nada más.
 
 **Tareas:**
-- [ ] En el servidor, rutas `/api/geocode` y `/api/current` que llaman a OpenWeatherMap con la clave y `units=metric`.
-- [ ] Añadir un campo de texto y un botón «Buscar».
-- [ ] Buscar la ciudad y usar la primera coincidencia.
-- [ ] Mostrar «Ciudad, PAÍS · NN °C».
+- [x] En el servidor, rutas `/api/geocode` y `/api/current` que llaman a OpenWeatherMap con la clave y `units=metric`.
+- [x] Añadir un campo de texto y un botón «Buscar».
+- [x] Buscar la ciudad y usar la primera coincidencia.
+- [x] Mostrar «Ciudad, PAÍS · NN °C».
 
 **Pruebas:**
 - Unitaria: con `temp: 21.4` se muestra «21 °C».
@@ -39,6 +39,8 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 - E2e con la API simulada: escribo «Madrid», pulso Buscar y veo «Madrid, ES · 21 °C».
 
 **Hecho cuando:** las pruebas pasan y, con tu clave real, buscas una ciudad y ves su temperatura.
+
+> ⚠️ Pendiente: la prueba con la clave real. OpenWeatherMap responde 401 «Invalid API key» (puede que la clave aún no esté activa).
 
 ## Fase 2 · Errores
 

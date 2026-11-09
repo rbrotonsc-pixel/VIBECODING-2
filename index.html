@@ -9,6 +9,14 @@
   <body>
     <main>
       <h1 id="app-name"></h1>
+      <form id="search" class="search">
+        <label for="city">Ciudad</label>
+        <input id="city" name="city" type="text" autocomplete="off" placeholder="p. ej. Madrid" />
+        <button type="submit">Buscar</button>
+      </form>
+      <section id="current" class="card" aria-live="polite">
+        <p id="summary" class="summary"></p>
+      </section>
     </main>
     <script type="module" src="/src/web/main.js"></script>
   </body>
