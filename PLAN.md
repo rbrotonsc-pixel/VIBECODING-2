@@ -40,8 +40,6 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 
 **Hecho cuando:** las pruebas pasan y, con tu clave real, buscas una ciudad y ves su temperatura.
 
-> ⚠️ Pendiente: la prueba con la clave real. OpenWeatherMap responde 401 «Invalid API key» (puede que la clave aún no esté activa).
-
 ## Fase 2 · Errores
 
 **Objetivo:** avisar con un mensaje claro cuando algo falla.
@@ -139,9 +137,9 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 **Objetivo:** no repetir llamadas a OpenWeatherMap para el mismo sitio en menos de 10 minutos.
 
 **Tareas:**
-- [ ] Tabla de caché en Postgres, creada al arrancar el servidor si no existe.
-- [ ] El tiempo actual y la previsión pasan por la caché, con una validez de 10 minutos.
-- [ ] Si Postgres falla, el servidor sigue respondiendo llamando directamente a OpenWeatherMap.
+- [x] Tabla de caché en Postgres, creada al arrancar el servidor si no existe.
+- [x] El tiempo actual y la previsión pasan por la caché, con una validez de 10 minutos.
+- [x] Si Postgres falla, el servidor sigue respondiendo llamando directamente a OpenWeatherMap.
 
 **Pruebas:**
 - Unitaria con el reloj simulado: dos peticiones en 5 minutos → 1 llamada a OpenWeatherMap; a los 11 minutos → 2.
