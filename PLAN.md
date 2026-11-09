@@ -93,10 +93,10 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 **Objetivo:** que los datos se actualicen solos.
 
 **Tareas:**
-- [ ] Actualizar cada 10 minutos y mostrar «Última actualización: HH:MM».
-- [ ] Botón «Actualizar» para refrescar a mano.
-- [ ] Si una actualización falla, mantener los datos y mostrar «No se ha podido actualizar. Se reintentará en 10 minutos».
-- [ ] Al buscar otra ciudad, el temporizador vuelve a empezar.
+- [x] Actualizar cada 10 minutos y mostrar «Última actualización: HH:MM».
+- [x] Botón «Actualizar» para refrescar a mano.
+- [x] Si una actualización falla, mantener los datos y mostrar «No se ha podido actualizar. Se reintentará en 10 minutos».
+- [x] Al buscar otra ciudad, el temporizador vuelve a empezar.
 
 **Pruebas:**
 - Unitaria con el reloj simulado: avanzo 10 minutos y se pasa de 21 °C a 22 °C.

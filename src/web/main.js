@@ -1,32 +1,22 @@
 import { createApi } from './api.js';
 import { APP_NAME } from './app-name.js';
-import { formatDetails, formatPlaceOption, formatSummary } from './format.js';
+import { createController } from './controller.js';
+import { formatDetails, formatPlaceOption, formatSummary, formatUpdatedAt } from './format.js';
 import { messageFor } from './messages.js';
-import { findPlaces, isBlank, loadWeather } from './search.js';
 import { describeSky } from './sky.js';
 
-const api = createApi();
-const form = document.getElementById('search');
-const summary = document.getElementById('summary');
-const message = document.getElementById('message');
-const icon = document.getElementById('sky-icon');
-const details = document.getElementById('details');
-const choices = document.getElementById('choices');
+const $ = (id) => document.getElementById(id);
+const form = $('search');
 
-document.getElementById('app-name').textContent = APP_NAME;
+$('app-name').textContent = APP_NAME;
 
-function showError(error) {
-  // Los datos anteriores se quedan como estaban.
-  message.textContent = messageFor(error.code);
-}
-
-function showChoices(places) {
-  choices.replaceChildren(
+function renderChoices(places) {
+  $('choices').replaceChildren(
     ...places.map((place) => {
       const button = document.createElement('button');
       button.type = 'button';
       button.textContent = formatPlaceOption(place);
-      button.addEventListener('click', () => selectPlace(place));
+      button.addEventListener('click', () => controller.select(place));
       const item = document.createElement('li');
       item.append(button);
       return item;
@@ -34,31 +24,22 @@ function showChoices(places) {
   );
 }
 
-async function selectPlace(place) {
-  choices.replaceChildren();
-  try {
-    const { current } = await loadWeather(api, place);
-    summary.textContent = formatSummary(place, current);
-    details.textContent = formatDetails(current);
-    icon.textContent = describeSky(current).icon;
-    message.textContent = '';
-  } catch (error) {
-    showError(error);
-  }
+function render(state) {
+  $('message').textContent = state.error ? messageFor(state.error) : '';
+  renderChoices(state.choices);
+  if (!state.current) return;
+  $('summary').textContent = formatSummary(state.place, state.current);
+  $('details').textContent = formatDetails(state.current);
+  $('sky-icon').textContent = describeSky(state.current).icon;
+  $('updated-at').textContent = formatUpdatedAt(state.updatedAt);
+  $('refresh').hidden = false;
 }
 
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  const query = new FormData(form).get('city');
-  if (isBlank(query)) return;
+const controller = createController({ api: createApi(), onChange: render });
 
-  choices.replaceChildren();
-  try {
-    const places = await findPlaces(api, query);
-    message.textContent = '';
-    if (places.length === 1) await selectPlace(places[0]);
-    else showChoices(places);
-  } catch (error) {
-    showError(error);
-  }
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  controller.search(new FormData(form).get('city'));
 });
+
+$('refresh').addEventListener('click', () => controller.refresh());

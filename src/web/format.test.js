@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { formatDetails, formatPlace, formatPlaceOption, formatSummary, formatTemp, msToKmh } from './format.js';
+import {
+  formatDetails,
+  formatPlace,
+  formatPlaceOption,
+  formatSummary,
+  formatTemp,
+  formatUpdatedAt,
+  msToKmh,
+} from './format.js';
 
 describe('formatTemp', () => {
   it('redondea a grados enteros', () => {
@@ -49,5 +57,11 @@ describe('formatPlaceOption', () => {
   it('incluye la región si la hay', () => {
     expect(formatPlaceOption({ name: 'Valencia', state: 'Carabobo', country: 'VE' })).toBe('Valencia, Carabobo, VE');
     expect(formatPlaceOption({ name: 'Valencia', state: null, country: 'VE' })).toBe('Valencia, VE');
+  });
+});
+
+describe('formatUpdatedAt', () => {
+  it('muestra la hora con dos cifras', () => {
+    expect(formatUpdatedAt(new Date('2026-11-09T09:05:00'))).toBe('Última actualización: 09:05');
   });
 });
