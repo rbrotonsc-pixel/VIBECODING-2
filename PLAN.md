@@ -6,33 +6,36 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 
 ## Fase 0 · Esqueleto
 
-**Objetivo:** el proyecto arranca y se puede probar.
+**Objetivo:** el proyecto arranca en Docker y se puede probar.
 
 **Tareas:**
-- [ ] Crear el proyecto con Vite, Vitest, Playwright y ESLint.
+- [ ] Crear el proyecto con Vite, Express, Vitest, Playwright y ESLint.
+- [ ] `docker-compose.yml` con tres servicios: `db` (Postgres), `server` (Express) y `web` (Vite).
+- [ ] Ruta `GET /api/health` que comprueba la conexión con Postgres.
 - [ ] Mostrar una primera pantalla con el nombre de la app («Tiempo en directo»).
-- [ ] Quitar `GEMINI_API_KEY` de `.env.example` y poner `VITE_OPENWEATHER_API_KEY`.
-- [ ] Añadir los scripts `dev`, `test`, `test:e2e` y `lint`.
+- [ ] Quitar `GEMINI_API_KEY` de `.env.example` y poner `OPENWEATHER_API_KEY` y las variables de Postgres.
+- [ ] Añadir los scripts `dev`, `server`, `test`, `test:db`, `test:e2e` y `lint`.
 
 **Pruebas:**
 - Una prueba e2e comprueba que la app se abre y muestra su nombre.
+- Una prueba del servidor comprueba `/api/health`.
 - `npm run lint` pasa sin errores ni avisos.
 
-**Hecho cuando:** `npm run dev` abre la página con el nombre de la app, `.env.example` ya no contiene `GEMINI_API_KEY`, y `npm test`, `npm run test:e2e` y `npm run lint` pasan sin errores ni avisos.
+**Hecho cuando:** `docker compose up --build` arranca las tres piezas, `http://localhost:5173` muestra el nombre de la app, `/api/health` responde `ok`, `.env.example` ya no contiene `GEMINI_API_KEY`, y todas las pruebas y el linter pasan.
 
 ## Fase 1 · Temperatura de una ciudad
 
 **Objetivo:** escribir una ciudad y ver su temperatura actual. Nada más.
 
 **Tareas:**
+- [ ] En el servidor, rutas `/api/geocode` y `/api/current` que llaman a OpenWeatherMap con la clave y `units=metric`.
 - [ ] Añadir un campo de texto y un botón «Buscar».
-- [ ] Buscar la ciudad en el geocoding y usar la primera coincidencia.
-- [ ] Pedir el tiempo actual con esas coordenadas (`units=metric`).
+- [ ] Buscar la ciudad y usar la primera coincidencia.
 - [ ] Mostrar «Ciudad, PAÍS · NN °C».
 
 **Pruebas:**
 - Unitaria: con `temp: 21.4` se muestra «21 °C».
-- Unitaria: la petición lleva la clave y `units=metric`.
+- Unitaria: la petición a OpenWeatherMap lleva la clave y `units=metric`.
 - E2e con la API simulada: escribo «Madrid», pulso Buscar y veo «Madrid, ES · 21 °C».
 
 **Hecho cuando:** las pruebas pasan y, con tu clave real, buscas una ciudad y ves su temperatura.
@@ -128,3 +131,19 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 - E2e: la gráfica muestra los 8 puntos de previsión.
 
 **Hecho cuando:** la gráfica muestra datos medidos y previsión diferenciados y las pruebas pasan.
+
+## Fase 8 · Caché en Postgres
+
+**Objetivo:** no repetir llamadas a OpenWeatherMap para el mismo sitio en menos de 10 minutos.
+
+**Tareas:**
+- [ ] Tabla de caché en Postgres, creada al arrancar el servidor si no existe.
+- [ ] El tiempo actual y la previsión pasan por la caché, con una validez de 10 minutos.
+- [ ] Si Postgres falla, el servidor sigue respondiendo llamando directamente a OpenWeatherMap.
+
+**Pruebas:**
+- Unitaria con el reloj simulado: dos peticiones en 5 minutos → 1 llamada a OpenWeatherMap; a los 11 minutos → 2.
+- Unitaria: si la caché falla, la respuesta llega igualmente.
+- `npm run test:db`: guardar y leer de la caché contra el Postgres de Docker.
+
+**Hecho cuando:** la segunda petición en menos de 10 minutos sale de Postgres y todas las pruebas pasan.
