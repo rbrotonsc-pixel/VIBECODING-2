@@ -37,6 +37,20 @@
           <span class="key key-forecast"></span> Previsión 24 h
         </p>
       </section>
+      <section id="forecast-card" class="card" hidden>
+        <h2 id="forecast-title">Próximas 24 horas</h2>
+        <table class="forecast" aria-labelledby="forecast-title">
+          <thead>
+            <tr>
+              <th scope="col">Hora</th>
+              <th scope="col">Cielo</th>
+              <th scope="col">Temp.</th>
+              <th scope="col">Lluvia</th>
+            </tr>
+          </thead>
+          <tbody id="forecast-rows"></tbody>
+        </table>
+      </section>
     </main>
     <script type="module" src="/src/web/main.js"></script>
   </body>

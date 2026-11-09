@@ -6,7 +6,7 @@ const PORT = 5174;
 
 export default defineConfig({
   testDir: 'e2e',
-  use: { baseURL: `http://localhost:${PORT}` },
+  use: { baseURL: `http://localhost:${PORT}`, timezoneId: 'Europe/Madrid' },
   webServer: {
     command: `npx vite --port ${PORT} --strictPort`,
     url: `http://localhost:${PORT}`,

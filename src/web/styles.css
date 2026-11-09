@@ -142,3 +142,11 @@ h1 { margin: 0 0 16px; font-size: 1.6rem; }
 .key-forecast { background: var(--forecast); margin-left: 12px; }
 
 [hidden] { display: none !important; }
+
+.forecast { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.forecast th { text-align: left; font-weight: 600; color: var(--muted); font-size: 0.8rem; padding: 6px 8px; border-bottom: 1px solid #e3e8ef; }
+.forecast td { padding: 8px; border-bottom: 1px solid #eef1f5; }
+.forecast tr:last-child td { border-bottom: 0; }
+.forecast td:nth-child(3), .forecast th:nth-child(3),
+.forecast td:nth-child(4), .forecast th:nth-child(4) { text-align: right; white-space: nowrap; }
+.forecast td:first-child { font-variant-numeric: tabular-nums; color: var(--muted); }

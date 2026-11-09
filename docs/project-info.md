@@ -14,6 +14,7 @@ Personas que quieren tener a la vista el tiempo de un sitio concreto sin ir reca
 - Dibujar una gráfica con:
   - las temperaturas registradas desde que se abrió la página, una por actualización;
   - la previsión de temperatura de las próximas 24 horas (en tramos de 3 horas).
+- Mostrar debajo de la gráfica una tabla con la previsión de las próximas 24 horas: hora, cielo, temperatura y probabilidad de lluvia.
 - Avisar con un mensaje claro si la ciudad no existe, si falla la conexión o si la clave no es válida, sin perder los últimos datos mostrados.
 
 ## Fuera de alcance

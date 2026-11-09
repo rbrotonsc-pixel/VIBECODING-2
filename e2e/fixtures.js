@@ -14,11 +14,16 @@ export const MADRID_NOW = {
   rain1h: null,
 };
 
-export function forecastSteps(count, start = '2026-11-09T12:00:00.000Z') {
+// Las pruebas e2e usan la hora de Madrid (playwright.config.js): 11:00Z son las 12:00.
+export function forecastSteps(count, start = '2026-11-09T11:00:00.000Z') {
   const first = new Date(start).getTime();
   return Array.from({ length: count }, (_, i) => ({
     time: new Date(first + i * 3 * 3600 * 1000).toISOString(),
     temp: 18 + i,
+    conditionId: 800,
+    description: 'clear sky',
+    isNight: false,
+    pop: 0.2,
   }));
 }
 

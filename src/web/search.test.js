@@ -44,13 +44,13 @@ describe('loadWeather', () => {
       },
       forecast: async (lat, lon) => {
         calls.push(['forecast', lat, lon]);
-        return [{ time: '2026-11-09T12:00:00.000Z', temp: 29 }];
+        return [{ time: '2026-11-09T12:00:00.000Z', temp: 29, conditionId: 800, isNight: false, pop: 0.2 }];
       },
     };
     await expect(loadWeather(api, VALENCIA_VE)).resolves.toEqual({
       place: VALENCIA_VE,
       current: { temp: 28 },
-      forecast: [{ time: new Date('2026-11-09T12:00:00.000Z'), temp: 29 }],
+      forecast: [{ time: new Date('2026-11-09T12:00:00.000Z'), temp: 29, conditionId: 800, isNight: false, pop: 0.2 }],
     });
     expect(calls).toEqual([
       ['current', 10.16, -68.0],

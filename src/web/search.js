@@ -30,6 +30,6 @@ export async function loadWeather(api, place) {
     place,
     current: current.value,
     forecast:
-      forecast.status === 'fulfilled' ? forecast.value.map((p) => ({ time: new Date(p.time), temp: p.temp })) : null,
+      forecast.status === 'fulfilled' ? forecast.value.map((p) => ({ ...p, time: new Date(p.time) })) : null,
   };
 }

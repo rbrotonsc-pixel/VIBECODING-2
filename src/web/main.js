@@ -2,6 +2,7 @@ import { createApi } from './api.js';
 import { APP_NAME } from './app-name.js';
 import { renderChart } from './chart.js';
 import { buildChartModel } from './chart-data.js';
+import { buildForecastRows, renderForecastTable } from './forecast-table.js';
 import { createController } from './controller.js';
 import { formatDetails, formatPlaceOption, formatSummary, formatUpdatedAt } from './format.js';
 import { messageFor } from './messages.js';
@@ -37,6 +38,8 @@ function render(state) {
   $('refresh').hidden = false;
   renderChart($('chart'), buildChartModel({ measured: state.history, forecast: state.forecast }));
   $('chart-card').hidden = false;
+  renderForecastTable($('forecast-rows'), buildForecastRows(state.forecast));
+  $('forecast-card').hidden = state.forecast.length === 0;
 }
 
 const controller = createController({ api: createApi(), onChange: render });

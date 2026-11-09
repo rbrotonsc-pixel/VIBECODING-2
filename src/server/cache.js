@@ -25,6 +25,7 @@ export function withCache(weather, repo, { ttlMs = CACHE_TTL_MS, now = () => new
   return {
     geocode: (query) => weather.geocode(query),
     current: (lat, lon) => cached('current', lat, lon, () => weather.current(lat, lon)),
-    forecast: (lat, lon) => cached('forecast', lat, lon, () => weather.forecast(lat, lon)),
+    // «-v2»: desde la fase 9 la previsión trae el cielo y la lluvia; así no se sirven respuestas antiguas sin ellos.
+    forecast: (lat, lon) => cached('forecast-v2', lat, lon, () => weather.forecast(lat, lon)),
   };
 }

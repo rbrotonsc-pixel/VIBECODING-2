@@ -101,13 +101,30 @@ describe('toCurrent', () => {
 
 describe('previsión', () => {
   const start = Date.UTC(2026, 10, 9, 12, 0, 0) / 1000;
-  const list = Array.from({ length: 40 }, (_, i) => ({ dt: start + i * 3 * 3600, main: { temp: 10 + i } }));
+  const list = Array.from({ length: 40 }, (_, i) => ({
+    dt: start + i * 3 * 3600,
+    main: { temp: 10 + i },
+    weather: [{ id: 800, description: 'clear sky', icon: '01d' }],
+    pop: 0.2,
+  }));
 
   it('de 40 tramos se queda con los 8 primeros, con su hora', () => {
     const forecast = toForecast({ list });
     expect(forecast).toHaveLength(8);
-    expect(forecast[0]).toEqual({ time: '2026-11-09T12:00:00.000Z', temp: 10 });
-    expect(forecast[7]).toEqual({ time: '2026-11-10T09:00:00.000Z', temp: 17 });
+    expect(forecast[0]).toMatchObject({ time: '2026-11-09T12:00:00.000Z', temp: 10 });
+    expect(forecast[7]).toMatchObject({ time: '2026-11-10T09:00:00.000Z', temp: 17 });
+  });
+
+  it('cada tramo trae el cielo, si es de noche y la probabilidad de lluvia', () => {
+    const night = { dt: start, main: { temp: 8 }, weather: [{ id: 500, description: 'light rain', icon: '10n' }], pop: 0.65 };
+    expect(toForecast({ list: [night] })).toEqual([
+      { time: '2026-11-09T12:00:00.000Z', temp: 8, conditionId: 500, description: 'light rain', isNight: true, pop: 0.65 },
+    ]);
+  });
+
+  it('si falta la probabilidad de lluvia, es null', () => {
+    const step = { dt: start, main: { temp: 8 }, weather: [] };
+    expect(toForecast({ list: [step] })[0]).toMatchObject({ conditionId: null, isNight: false, pop: null });
   });
 
   it('pide la previsión con la clave, en métricas y solo 8 tramos', async () => {

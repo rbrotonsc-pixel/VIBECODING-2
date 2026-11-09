@@ -71,8 +71,15 @@ export function toCurrent(raw) {
 }
 
 export function toForecast(raw) {
-  return raw.list.slice(0, FORECAST_STEPS).map((step) => ({
-    time: new Date(step.dt * 1000).toISOString(),
-    temp: step.main.temp,
-  }));
+  return raw.list.slice(0, FORECAST_STEPS).map((step) => {
+    const sky = step.weather?.[0] ?? {};
+    return {
+      time: new Date(step.dt * 1000).toISOString(),
+      temp: step.main.temp,
+      conditionId: sky.id ?? null,
+      description: sky.description ?? '',
+      isNight: String(sky.icon ?? '').endsWith('n'),
+      pop: step.pop ?? null,
+    };
+  });
 }

@@ -147,3 +147,20 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 - `npm run test:db`: guardar y leer de la caché contra el Postgres de Docker.
 
 **Hecho cuando:** la segunda petición en menos de 10 minutos sale de Postgres y todas las pruebas pasan.
+
+## Fase 9 · Tabla de previsión
+
+**Objetivo:** ver debajo de la gráfica una tabla con la previsión de las próximas 24 horas.
+
+**Tareas:**
+- [x] El servidor devuelve en cada tramo de la previsión el estado del cielo, si es de noche y la probabilidad de lluvia.
+- [x] Cambiar la clave de la caché de previsión para no servir respuestas antiguas sin esos datos.
+- [x] Tabla con las 8 franjas de 3 horas: hora, cielo (icono y texto), temperatura y probabilidad de lluvia.
+- [x] La tabla se actualiza a la vez que la gráfica.
+
+**Pruebas:**
+- Unitaria: la previsión del servidor trae cielo, noche y probabilidad de lluvia de cada tramo.
+- Unitaria: las filas de la tabla se calculan bien (12:00 · ☀️ Despejado · 18 °C · 20 %).
+- E2e: con una previsión simulada de 8 tramos, la tabla tiene 8 filas y la primera es «12:00 · ☀️ Despejado · 18 °C · 20 %».
+
+**Hecho cuando:** la tabla aparece con datos reales debajo de la gráfica y todas las pruebas pasan.

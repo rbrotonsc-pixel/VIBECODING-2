@@ -78,7 +78,7 @@ describe('withCache', () => {
     await cached.current(40.4, -3.7);
     expect(weather.calls.forecast).toBe(1);
     expect(weather.calls.current).toBe(1);
-    expect([...repo.rows.keys()].sort()).toEqual(['current:40.40:-3.70', 'forecast:40.40:-3.70']);
+    expect([...repo.rows.keys()].sort()).toEqual(['current:40.40:-3.70', 'forecast-v2:40.40:-3.70']);
   });
 
   it('la búsqueda de ciudades no se guarda en caché', async () => {
