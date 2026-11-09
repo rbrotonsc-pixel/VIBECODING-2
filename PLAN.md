@@ -9,12 +9,12 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 **Objetivo:** el proyecto arranca en Docker y se puede probar.
 
 **Tareas:**
-- [ ] Crear el proyecto con Vite, Express, Vitest, Playwright y ESLint.
-- [ ] `docker-compose.yml` con tres servicios: `db` (Postgres), `server` (Express) y `web` (Vite).
-- [ ] Ruta `GET /api/health` que comprueba la conexión con Postgres.
-- [ ] Mostrar una primera pantalla con el nombre de la app («Tiempo en directo»).
-- [ ] Quitar `GEMINI_API_KEY` de `.env.example` y poner `OPENWEATHER_API_KEY` y las variables de Postgres.
-- [ ] Añadir los scripts `dev`, `server`, `test`, `test:db`, `test:e2e` y `lint`.
+- [x] Crear el proyecto con Vite, Express, Vitest, Playwright y ESLint.
+- [x] `docker-compose.yml` con tres servicios: `db` (Postgres), `server` (Express) y `web` (Vite).
+- [x] Ruta `GET /api/health` que comprueba la conexión con Postgres.
+- [x] Mostrar una primera pantalla con el nombre de la app («Tiempo en directo»).
+- [x] Quitar `GEMINI_API_KEY` de `.env.example` y poner `OPENWEATHER_API_KEY` y las variables de Postgres.
+- [x] Añadir los scripts `dev`, `server`, `test`, `test:db`, `test:e2e` y `lint`.
 
 **Pruebas:**
 - Una prueba e2e comprueba que la app se abre y muestra su nombre.

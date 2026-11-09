@@ -1,0 +1,27 @@
+{
+  "name": "tiempo-en-directo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "server": "node --env-file=.env src/server/index.js",
+    "test": "vitest run",
+    "test:db": "DB_TESTS=1 node --env-file=.env node_modules/vitest/vitest.mjs run",
+    "test:e2e": "playwright test",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.0",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "supertest": "^7.3.2",
+    "vite": "^8.3.7",
+    "vitest": "^5.1.0"
+  }
+}
