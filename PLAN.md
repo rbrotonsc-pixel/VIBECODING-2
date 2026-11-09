@@ -63,11 +63,11 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 **Objetivo:** mostrar todos los datos del tiempo actual.
 
 **Tareas:**
-- [ ] Sensación térmica.
-- [ ] Estado del cielo en español con su icono.
-- [ ] Humedad.
-- [ ] Viento en km/h.
-- [ ] Lluvia, si la hay.
+- [x] Sensación térmica.
+- [x] Estado del cielo en español con su icono.
+- [x] Humedad.
+- [x] Viento en km/h.
+- [x] Lluvia, si la hay.
 
 **Pruebas:**
 - Unitaria de las conversiones (5 m/s = 18 km/h) y de las traducciones del estado del cielo.

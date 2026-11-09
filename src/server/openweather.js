@@ -50,5 +50,15 @@ export function toPlace(raw) {
 }
 
 export function toCurrent(raw) {
-  return { temp: raw.main.temp };
+  const sky = raw.weather?.[0] ?? {};
+  return {
+    temp: raw.main.temp,
+    feelsLike: raw.main.feels_like,
+    humidity: raw.main.humidity,
+    windSpeed: raw.wind?.speed ?? 0,
+    conditionId: sky.id ?? null,
+    description: sky.description ?? '',
+    isNight: String(sky.icon ?? '').endsWith('n'),
+    rain1h: raw.rain?.['1h'] ?? null,
+  };
 }

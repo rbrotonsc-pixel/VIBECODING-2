@@ -16,7 +16,13 @@
       </form>
       <p id="message" class="message" role="alert"></p>
       <section id="current" class="card" aria-live="polite">
-        <p id="summary" class="summary"></p>
+        <div class="now">
+          <span id="sky-icon" class="sky-icon" aria-hidden="true"></span>
+          <div>
+            <p id="summary" class="summary"></p>
+            <p id="details" class="details"></p>
+          </div>
+        </div>
       </section>
     </main>
     <script type="module" src="/src/web/main.js"></script>

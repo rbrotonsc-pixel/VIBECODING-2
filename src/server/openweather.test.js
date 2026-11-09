@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createOpenWeather } from './openweather.js';
+import { createOpenWeather, toCurrent } from './openweather.js';
 
 function fakeFetch(body) {
   const calls = [];
@@ -17,7 +17,7 @@ describe('createOpenWeather', () => {
 
     const current = await ow.current(40.4, -3.7);
 
-    expect(current).toEqual({ temp: 21.4 });
+    expect(current.temp).toBe(21.4);
     const url = calls[0];
     expect(url.origin + url.pathname).toBe('https://api.openweathermap.org/data/2.5/weather');
     expect(url.searchParams.get('appid')).toBe('clave-de-prueba');
@@ -66,5 +66,35 @@ describe('createOpenWeather: errores', () => {
     };
     const ow = createOpenWeather({ apiKey: 'k', fetchFn });
     await expect(ow.current(1, 2)).rejects.toMatchObject({ code: 'NETWORK' });
+  });
+});
+
+describe('toCurrent', () => {
+  it('se queda con los datos que muestra la página', () => {
+    const raw = {
+      main: { temp: 21.4, feels_like: 20.6, humidity: 40 },
+      wind: { speed: 5 },
+      weather: [{ id: 800, description: 'clear sky', icon: '01d' }],
+    };
+    expect(toCurrent(raw)).toEqual({
+      temp: 21.4,
+      feelsLike: 20.6,
+      humidity: 40,
+      windSpeed: 5,
+      conditionId: 800,
+      description: 'clear sky',
+      isNight: false,
+      rain1h: null,
+    });
+  });
+
+  it('recoge la lluvia de la última hora y si es de noche', () => {
+    const raw = {
+      main: { temp: 12, feels_like: 11, humidity: 90 },
+      wind: { speed: 2 },
+      weather: [{ id: 500, description: 'light rain', icon: '10n' }],
+      rain: { '1h': 0.42 },
+    };
+    expect(toCurrent(raw)).toMatchObject({ rain1h: 0.42, isNight: true, conditionId: 500 });
   });
 });

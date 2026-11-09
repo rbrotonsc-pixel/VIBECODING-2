@@ -1,5 +1,13 @@
+import { describeSky } from './sky.js';
+
+const decimal = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 });
+
 export function formatTemp(celsius) {
   return `${Math.round(celsius) || 0} °C`;
+}
+
+export function msToKmh(metersPerSecond) {
+  return Math.round(metersPerSecond * 3.6);
 }
 
 export function formatPlace(place) {
@@ -8,4 +16,15 @@ export function formatPlace(place) {
 
 export function formatSummary(place, current) {
   return `${formatPlace(place)} · ${formatTemp(current.temp)}`;
+}
+
+export function formatDetails(current) {
+  const parts = [
+    `sensación ${formatTemp(current.feelsLike)}`,
+    `humedad ${current.humidity} %`,
+    `viento ${msToKmh(current.windSpeed)} km/h`,
+    describeSky(current).label,
+  ];
+  if (current.rain1h) parts.push(`lluvia ${decimal.format(current.rain1h)} mm/h`);
+  return parts.join(' · ');
 }

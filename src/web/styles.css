@@ -59,8 +59,7 @@ h1 { margin: 0 0 16px; font-size: 1.6rem; }
   margin-bottom: 16px;
 }
 
-.card:empty,
-.summary:empty { display: none; }
+.card:has(.summary:empty) { display: none; }
 
 .summary { margin: 0; font-size: 1.3rem; font-weight: 600; }
 
@@ -73,3 +72,9 @@ h1 { margin: 0 0 16px; font-size: 1.6rem; }
 }
 
 .message:empty { display: none; }
+
+.now { display: flex; align-items: center; gap: 12px; }
+.sky-icon { font-size: 2.6rem; line-height: 1; }
+.sky-icon:empty { display: none; }
+.details { margin: 4px 0 0; color: var(--muted); }
+.details:empty { display: none; }
