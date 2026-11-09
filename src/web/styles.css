@@ -5,6 +5,8 @@
   --muted: #5d6b7e;
   --accent: #2f6fd6;
   --forecast: #d9822b;
+  --hot: #c62828;
+  --cold: #1565c0;
   --error-bg: #fdecea;
   --error-text: #8a1c12;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -150,3 +152,5 @@ h1 { margin: 0 0 16px; font-size: 1.6rem; }
 .forecast td:nth-child(3), .forecast th:nth-child(3),
 .forecast td:nth-child(4), .forecast th:nth-child(4) { text-align: right; white-space: nowrap; }
 .forecast td:first-child { font-variant-numeric: tabular-nums; color: var(--muted); }
+.forecast td.temp-hot { color: var(--hot); font-weight: 600; }
+.forecast td.temp-cold { color: var(--cold); font-weight: 600; }

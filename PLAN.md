@@ -164,3 +164,18 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 - E2e: con una previsión simulada de 8 tramos, la tabla tiene 8 filas y la primera es «12:00 · ☀️ Despejado · 18 °C · 20 %».
 
 **Hecho cuando:** la tabla aparece con datos reales debajo de la gráfica y todas las pruebas pasan.
+
+## Fase 10 · Colores de temperatura en la tabla
+
+**Objetivo:** destacar en la tabla de previsión las temperaturas altas y bajas.
+
+**Tareas:**
+- [x] Temperatura mostrada (redondeada) por encima de 30 °C → en rojo.
+- [x] Temperatura mostrada (redondeada) por debajo de 20 °C → en azul.
+- [x] 20 °C a 30 °C, ambos incluidos → sin color.
+
+**Pruebas:**
+- Unitaria de los límites: 30,4 → sin color (se ve 30); 30,5 → rojo (se ve 31); 19,5 → sin color (se ve 20); 19,4 → azul (se ve 19).
+- E2e: con previsión de 31 °C, 25 °C y 15 °C, la primera celda sale en rojo, la segunda sin color y la tercera en azul.
+
+**Hecho cuando:** los colores aparecen en la tabla con datos reales y todas las pruebas pasan.
