@@ -109,9 +109,9 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 **Objetivo:** ver cómo ha cambiado la temperatura desde que se abrió la página.
 
 **Tareas:**
-- [ ] Decidir contigo si la gráfica se dibuja sin librería o con Chart.js.
-- [ ] Cada actualización añade un punto a la gráfica.
-- [ ] Al cambiar de ciudad, la gráfica empieza de cero.
+- [x] Decidir contigo si la gráfica se dibuja sin librería o con Chart.js (decidido: SVG propio).
+- [x] Cada actualización añade un punto a la gráfica.
+- [x] Al cambiar de ciudad, la gráfica empieza de cero.
 
 **Pruebas:**
 - Unitaria de la función que prepara los puntos.

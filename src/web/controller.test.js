@@ -165,3 +165,37 @@ describe('refresco automático', () => {
     controller.stop();
   });
 });
+
+describe('histórico para la gráfica', () => {
+  it('cada actualización añade un punto', async () => {
+    const { controller, state } = setup({ temps: [21.4, 22] });
+    await controller.search('Madrid');
+    expect(state().history).toEqual([{ time: new Date('2026-11-09T10:00:00'), temp: 21.4 }]);
+
+    await vi.advanceTimersByTimeAsync(REFRESH_MS);
+    expect(state().history).toEqual([
+      { time: new Date('2026-11-09T10:00:00'), temp: 21.4 },
+      { time: new Date('2026-11-09T10:10:00'), temp: 22 },
+    ]);
+    controller.stop();
+  });
+
+  it('una actualización fallida no añade punto', async () => {
+    const { controller, state } = setup({ temps: [21.4, new ApiError('NETWORK')] });
+    await controller.search('Madrid');
+    await vi.advanceTimersByTimeAsync(REFRESH_MS);
+    expect(state().history).toHaveLength(1);
+    controller.stop();
+  });
+
+  it('al cambiar de ciudad empieza de cero', async () => {
+    const { controller, state } = setup({ temps: [21.4, 22, 15] });
+    await controller.search('Madrid');
+    await controller.refresh();
+    expect(state().history).toHaveLength(2);
+
+    await controller.select(BILBAO);
+    expect(state().history).toEqual([{ time: new Date('2026-11-09T10:00:00'), temp: 15 }]);
+    controller.stop();
+  });
+});

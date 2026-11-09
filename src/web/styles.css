@@ -122,3 +122,18 @@ h1 { margin: 0 0 16px; font-size: 1.6rem; }
   color: var(--accent);
   cursor: pointer;
 }
+
+.card h2 { margin: 0 0 8px; font-size: 1rem; }
+
+.chart { width: 100%; height: auto; display: block; }
+.chart text { font-size: 12px; fill: var(--muted); }
+.chart .grid { stroke: #e3e8ef; }
+.chart .line { fill: none; stroke-width: 2; }
+.chart .series-measured .line { stroke: var(--accent); }
+.chart .series-measured .dot { fill: var(--accent); }
+
+.legend { margin: 8px 0 0; font-size: 0.85rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.key { display: inline-block; width: 14px; height: 4px; border-radius: 2px; }
+.key-measured { background: var(--accent); }
+
+[hidden] { display: none !important; }

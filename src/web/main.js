@@ -1,5 +1,7 @@
 import { createApi } from './api.js';
 import { APP_NAME } from './app-name.js';
+import { renderChart } from './chart.js';
+import { buildChartModel } from './chart-data.js';
 import { createController } from './controller.js';
 import { formatDetails, formatPlaceOption, formatSummary, formatUpdatedAt } from './format.js';
 import { messageFor } from './messages.js';
@@ -33,6 +35,8 @@ function render(state) {
   $('sky-icon').textContent = describeSky(state.current).icon;
   $('updated-at').textContent = formatUpdatedAt(state.updatedAt);
   $('refresh').hidden = false;
+  renderChart($('chart'), buildChartModel({ measured: state.history }));
+  $('chart-card').hidden = false;
 }
 
 const controller = createController({ api: createApi(), onChange: render });
