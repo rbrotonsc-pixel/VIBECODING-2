@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createOpenWeather, toCurrent } from './openweather.js';
+import { createOpenWeather, toCurrent, toForecast } from './openweather.js';
 
 function fakeFetch(body) {
   const calls = [];
@@ -96,5 +96,32 @@ describe('toCurrent', () => {
       rain: { '1h': 0.42 },
     };
     expect(toCurrent(raw)).toMatchObject({ rain1h: 0.42, isNight: true, conditionId: 500 });
+  });
+});
+
+describe('previsión', () => {
+  const start = Date.UTC(2026, 10, 9, 12, 0, 0) / 1000;
+  const list = Array.from({ length: 40 }, (_, i) => ({ dt: start + i * 3 * 3600, main: { temp: 10 + i } }));
+
+  it('de 40 tramos se queda con los 8 primeros, con su hora', () => {
+    const forecast = toForecast({ list });
+    expect(forecast).toHaveLength(8);
+    expect(forecast[0]).toEqual({ time: '2026-11-09T12:00:00.000Z', temp: 10 });
+    expect(forecast[7]).toEqual({ time: '2026-11-10T09:00:00.000Z', temp: 17 });
+  });
+
+  it('pide la previsión con la clave, en métricas y solo 8 tramos', async () => {
+    const calls = [];
+    const fetchFn = async (url) => {
+      calls.push(new URL(url));
+      return { ok: true, status: 200, json: async () => ({ list }) };
+    };
+    const ow = createOpenWeather({ apiKey: 'clave-de-prueba', fetchFn });
+
+    await expect(ow.forecast(40.4, -3.7)).resolves.toHaveLength(8);
+    expect(calls[0].pathname).toBe('/data/2.5/forecast');
+    expect(calls[0].searchParams.get('appid')).toBe('clave-de-prueba');
+    expect(calls[0].searchParams.get('units')).toBe('metric');
+    expect(calls[0].searchParams.get('cnt')).toBe('8');
   });
 });

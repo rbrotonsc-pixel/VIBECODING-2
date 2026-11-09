@@ -35,5 +35,10 @@ export function renderChart(svg, model) {
     axes.append(el('text', { x: tick.x, y: model.height - 8, 'text-anchor': 'middle' }, tick.label));
   }
 
-  svg.append(axes, series(model.measured, 'measured'));
+  if (model.nowX !== null) {
+    axes.append(el('line', { x1: model.nowX, x2: model.nowX, y1: model.plot.top, y2: model.plot.bottom, class: 'now' }));
+    axes.append(el('text', { x: model.nowX + 4, y: model.plot.top + 10, class: 'now-label' }, 'ahora'));
+  }
+
+  svg.append(axes, series(model.measured, 'measured'), series(model.forecast, 'forecast'));
 }

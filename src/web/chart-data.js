@@ -7,8 +7,8 @@ export function formatTick(temp) {
   return `${temp} °C`;
 }
 
-export function buildChartModel({ measured }, size = CHART_SIZE) {
-  const all = measured;
+export function buildChartModel({ measured, forecast = [] }, size = CHART_SIZE) {
+  const all = [...measured, ...forecast];
   if (all.length === 0) return null;
 
   const plot = {
@@ -32,10 +32,10 @@ export function buildChartModel({ measured }, size = CHART_SIZE) {
       : plot.left + ((time - minTime) / (maxTime - minTime)) * (plot.right - plot.left);
   const y = (temp) => plot.bottom - ((temp - minTemp) / (maxTemp - minTemp)) * (plot.bottom - plot.top);
 
-  const toPoint = (p) => ({
+  const toPoint = (suffix) => (p) => ({
     x: x(p.time.getTime()),
     y: y(p.temp),
-    label: `${clock.format(p.time)} · ${Math.round(p.temp) || 0} °C`,
+    label: `${clock.format(p.time)} · ${Math.round(p.temp) || 0} °C${suffix}`,
   });
 
   const midTemp = Math.round((minTemp + maxTemp) / 2);
@@ -43,5 +43,17 @@ export function buildChartModel({ measured }, size = CHART_SIZE) {
 
   const xTicks = [...new Set([minTime, maxTime])].map((t) => ({ x: x(t), label: clock.format(new Date(t)) }));
 
-  return { ...size, plot, measured: measured.map(toPoint), yTicks, xTicks };
+  // Línea vertical «ahora» que separa lo medido de la previsión.
+  const lastMeasured = measured.at(-1);
+  const nowX = lastMeasured && forecast.length > 0 ? x(lastMeasured.time.getTime()) : null;
+
+  return {
+    ...size,
+    plot,
+    measured: measured.map(toPoint('')),
+    forecast: forecast.map(toPoint(' (previsión)')),
+    nowX,
+    yTicks,
+    xTicks,
+  };
 }

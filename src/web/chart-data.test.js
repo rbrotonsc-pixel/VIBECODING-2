@@ -14,6 +14,8 @@ describe('buildChartModel', () => {
     const { left, right } = model.plot;
     expect(model.measured[0].x).toBe((left + right) / 2);
     expect(model.measured[0].label).toBe('10:00 · 21 °C');
+    expect(model.forecast).toEqual([]);
+    expect(model.nowX).toBeNull();
   });
 
   it('el primer punto va a la izquierda, el último a la derecha y el más caliente más arriba', () => {
@@ -40,5 +42,35 @@ describe('buildChartModel', () => {
     expect(model.yTicks[0].y).toBe(model.plot.bottom);
     expect(model.yTicks[2].y).toBe(model.plot.top);
     expect(model.xTicks.map((t) => t.label)).toEqual(['10:00', '10:10']);
+  });
+});
+
+describe('buildChartModel con previsión', () => {
+  const measured = [
+    { time: at('10:00'), temp: 21.4 },
+    { time: at('10:10'), temp: 22 },
+  ];
+  const forecast = Array.from({ length: 8 }, (_, i) => ({
+    time: new Date(at('12:00').getTime() + i * 3 * 3600 * 1000),
+    temp: 18 + i,
+  }));
+
+  it('dibuja los 8 puntos de previsión después de los medidos', () => {
+    const model = buildChartModel({ measured, forecast });
+    expect(model.forecast).toHaveLength(8);
+    expect(model.forecast[0].x).toBeGreaterThan(model.measured[1].x);
+    expect(model.forecast[7].x).toBe(CHART_SIZE.width - CHART_SIZE.right);
+    expect(model.forecast[0].label).toBe('12:00 · 18 °C (previsión)');
+  });
+
+  it('la escala incluye las temperaturas de la previsión', () => {
+    const model = buildChartModel({ measured, forecast });
+    expect(model.yTicks[0].label).toBe('17 °C');
+    expect(model.yTicks.at(-1).label).toBe('26 °C');
+  });
+
+  it('marca «ahora» en el último punto medido', () => {
+    const model = buildChartModel({ measured, forecast });
+    expect(model.nowX).toBe(model.measured[1].x);
   });
 });

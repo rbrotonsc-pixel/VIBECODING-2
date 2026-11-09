@@ -19,7 +19,17 @@ export async function findPlaces(api, query) {
   return unique;
 }
 
+// El tiempo actual es imprescindible; la previsión no: si falla, forecast es null.
 export async function loadWeather(api, place) {
-  const current = await api.current(place.lat, place.lon);
-  return { place, current };
+  const [current, forecast] = await Promise.allSettled([
+    api.current(place.lat, place.lon),
+    api.forecast(place.lat, place.lon),
+  ]);
+  if (current.status === 'rejected') throw current.reason;
+  return {
+    place,
+    current: current.value,
+    forecast:
+      forecast.status === 'fulfilled' ? forecast.value.map((p) => ({ time: new Date(p.time), temp: p.temp })) : null,
+  };
 }

@@ -1,5 +1,4 @@
-import { expect, test } from '@playwright/test';
-import { MADRID_NOW } from './fixtures.js';
+import { expect, test, MADRID_NOW } from './fixtures.js';
 
 const VALENCIA_ES = { name: 'Valencia', country: 'ES', state: null, lat: 39.47, lon: -0.38 };
 const VALENCIA_VE = { name: 'Valencia', country: 'VE', state: null, lat: 10.16, lon: -68.0 };

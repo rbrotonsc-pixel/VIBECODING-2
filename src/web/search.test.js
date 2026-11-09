@@ -35,16 +35,47 @@ describe('findPlaces', () => {
 });
 
 describe('loadWeather', () => {
-  it('pide el tiempo con las coordenadas de la ciudad elegida', async () => {
+  it('pide el tiempo y la previsión con las coordenadas de la ciudad elegida', async () => {
     const calls = [];
     const api = {
       current: async (lat, lon) => {
-        calls.push([lat, lon]);
+        calls.push(['current', lat, lon]);
         return { temp: 28 };
       },
+      forecast: async (lat, lon) => {
+        calls.push(['forecast', lat, lon]);
+        return [{ time: '2026-11-09T12:00:00.000Z', temp: 29 }];
+      },
     };
-    await expect(loadWeather(api, VALENCIA_VE)).resolves.toEqual({ place: VALENCIA_VE, current: { temp: 28 } });
-    expect(calls).toEqual([[10.16, -68.0]]);
+    await expect(loadWeather(api, VALENCIA_VE)).resolves.toEqual({
+      place: VALENCIA_VE,
+      current: { temp: 28 },
+      forecast: [{ time: new Date('2026-11-09T12:00:00.000Z'), temp: 29 }],
+    });
+    expect(calls).toEqual([
+      ['current', 10.16, -68.0],
+      ['forecast', 10.16, -68.0],
+    ]);
+  });
+
+  it('si falla la previsión, devuelve el tiempo actual y forecast null', async () => {
+    const api = {
+      current: async () => ({ temp: 28 }),
+      forecast: async () => {
+        throw new Error('fallo');
+      },
+    };
+    await expect(loadWeather(api, VALENCIA_VE)).resolves.toMatchObject({ current: { temp: 28 }, forecast: null });
+  });
+
+  it('si falla el tiempo actual, falla la carga', async () => {
+    const api = {
+      current: async () => {
+        throw new Error('fallo');
+      },
+      forecast: async () => [],
+    };
+    await expect(loadWeather(api, VALENCIA_VE)).rejects.toThrow('fallo');
   });
 });
 

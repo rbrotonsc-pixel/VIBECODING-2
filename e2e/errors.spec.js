@@ -1,5 +1,4 @@
-import { expect, test } from '@playwright/test';
-import { MADRID, mockApi } from './fixtures.js';
+import { expect, test, MADRID, mockApi } from './fixtures.js';
 
 async function search(page, city) {
   await page.getByLabel('Ciudad').fill(city);

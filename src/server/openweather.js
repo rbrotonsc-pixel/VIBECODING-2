@@ -1,5 +1,8 @@
 const BASE_URL = 'https://api.openweathermap.org';
 
+// 8 tramos de 3 horas = las próximas 24 horas.
+export const FORECAST_STEPS = 8;
+
 // Errores conocidos: INVALID_KEY (clave no válida), NETWORK (no se llega a OpenWeatherMap), UPSTREAM (otro fallo suyo).
 export class WeatherError extends Error {
   constructor(code) {
@@ -36,6 +39,10 @@ export function createOpenWeather({ apiKey, fetchFn = fetch }) {
       const raw = await get('/data/2.5/weather', { lat, lon, units: 'metric' });
       return toCurrent(raw);
     },
+    async forecast(lat, lon) {
+      const raw = await get('/data/2.5/forecast', { lat, lon, units: 'metric', cnt: FORECAST_STEPS });
+      return toForecast(raw);
+    },
   };
 }
 
@@ -61,4 +68,11 @@ export function toCurrent(raw) {
     isNight: String(sky.icon ?? '').endsWith('n'),
     rain1h: raw.rain?.['1h'] ?? null,
   };
+}
+
+export function toForecast(raw) {
+  return raw.list.slice(0, FORECAST_STEPS).map((step) => ({
+    time: new Date(step.dt * 1000).toISOString(),
+    temp: step.main.temp,
+  }));
 }

@@ -131,9 +131,14 @@ h1 { margin: 0 0 16px; font-size: 1.6rem; }
 .chart .line { fill: none; stroke-width: 2; }
 .chart .series-measured .line { stroke: var(--accent); }
 .chart .series-measured .dot { fill: var(--accent); }
+.chart .series-forecast .line { stroke: var(--forecast); stroke-dasharray: 5 4; }
+.chart .series-forecast .dot { fill: var(--card); stroke: var(--forecast); stroke-width: 2; }
+.chart .now { stroke: var(--muted); stroke-dasharray: 2 3; }
+.chart .now-label { font-size: 11px; }
 
 .legend { margin: 8px 0 0; font-size: 0.85rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
 .key { display: inline-block; width: 14px; height: 4px; border-radius: 2px; }
 .key-measured { background: var(--accent); }
+.key-forecast { background: var(--forecast); margin-left: 12px; }
 
 [hidden] { display: none !important; }

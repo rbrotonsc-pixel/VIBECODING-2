@@ -1,5 +1,4 @@
-import { expect, test } from '@playwright/test';
-import { MADRID, MADRID_NOW } from './fixtures.js';
+import { expect, test, MADRID, MADRID_NOW } from './fixtures.js';
 
 // Devuelve, en orden, las respuestas de la lista; la última se repite.
 async function mockSequence(page, responses) {

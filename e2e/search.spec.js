@@ -1,5 +1,4 @@
-import { expect, test } from '@playwright/test';
-import { mockApi } from './fixtures.js';
+import { expect, test, mockApi } from './fixtures.js';
 
 test('busco Madrid y veo su temperatura', async ({ page }) => {
   await mockApi(page);

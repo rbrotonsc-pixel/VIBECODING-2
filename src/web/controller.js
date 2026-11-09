@@ -5,7 +5,7 @@ export const REFRESH_MS = 10 * 60 * 1000;
 // Estado de la app y reglas de búsqueda y refresco, sin tocar el DOM.
 // Cada cambio se avisa con onChange(estado).
 export function createController({ api, onChange, now = () => new Date(), intervalMs = REFRESH_MS }) {
-  let state = { place: null, current: null, updatedAt: null, history: [], choices: [], error: null };
+  let state = { place: null, current: null, updatedAt: null, history: [], forecast: [], choices: [], error: null };
   let timer = null;
   let loadId = 0; // para ignorar respuestas de cargas anteriores
 
@@ -22,13 +22,15 @@ export function createController({ api, onChange, now = () => new Date(), interv
   async function load(place, { isRefresh }) {
     const id = ++loadId;
     try {
-      const { current } = await loadWeather(api, place);
+      const { current, forecast } = await loadWeather(api, place);
       if (id !== loadId) return;
       const updatedAt = now();
       // La gráfica empieza de cero con cada ciudad nueva; cada actualización añade un punto.
       const point = { time: updatedAt, temp: current.temp };
       const history = isRefresh ? [...state.history, point] : [point];
-      set({ place, current, updatedAt, history, error: null });
+      // Si la previsión falla, se conserva la anterior de la misma ciudad.
+      const keptForecast = isRefresh ? state.forecast : [];
+      set({ place, current, updatedAt, history, forecast: forecast ?? keptForecast, error: null });
     } catch (error) {
       if (id !== loadId) return;
       // Si falla, los datos anteriores se quedan como estaban.

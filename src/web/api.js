@@ -25,5 +25,6 @@ export function createApi(fetchFn = (...args) => fetch(...args)) {
   return {
     geocode: (query) => get('/api/geocode', { q: query }),
     current: (lat, lon) => get('/api/current', { lat, lon }),
+    forecast: (lat, lon) => get('/api/forecast', { lat, lon }),
   };
 }

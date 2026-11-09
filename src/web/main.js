@@ -35,7 +35,7 @@ function render(state) {
   $('sky-icon').textContent = describeSky(state.current).icon;
   $('updated-at').textContent = formatUpdatedAt(state.updatedAt);
   $('refresh').hidden = false;
-  renderChart($('chart'), buildChartModel({ measured: state.history }));
+  renderChart($('chart'), buildChartModel({ measured: state.history, forecast: state.forecast }));
   $('chart-card').hidden = false;
 }
 

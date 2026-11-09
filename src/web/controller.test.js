@@ -18,6 +18,11 @@ function fakeApi({ places = [MADRID], temps = [21.4] } = {}) {
       if (next instanceof Error) throw next;
       return { temp: next };
     },
+    forecastResult: [{ time: '2026-11-09T12:00:00.000Z', temp: 25 }],
+    forecast: async () => {
+      if (api.forecastResult instanceof Error) throw api.forecastResult;
+      return api.forecastResult;
+    },
   };
   return api;
 }
@@ -152,6 +157,7 @@ describe('refresco automático', () => {
               releaseMadrid = () => resolve({ temp: 10 });
             })
           : Promise.resolve({ temp: 30 }),
+      forecast: async () => [],
     };
     const controller = createController({ api, onChange: () => {} });
 
@@ -196,6 +202,44 @@ describe('histórico para la gráfica', () => {
 
     await controller.select(BILBAO);
     expect(state().history).toEqual([{ time: new Date('2026-11-09T10:00:00'), temp: 15 }]);
+    controller.stop();
+  });
+});
+
+describe('previsión', () => {
+  const FORECAST = [{ time: new Date('2026-11-09T12:00:00.000Z'), temp: 25 }];
+
+  it('se carga junto al tiempo actual', async () => {
+    const { controller, state } = setup();
+    await controller.search('Madrid');
+    expect(state().forecast).toEqual(FORECAST);
+    controller.stop();
+  });
+
+  it('se refresca a la vez que el tiempo actual', async () => {
+    const { api, controller, state } = setup({ temps: [21.4, 22] });
+    await controller.search('Madrid');
+    api.forecastResult = [{ time: '2026-11-09T15:00:00.000Z', temp: 26 }];
+    await vi.advanceTimersByTimeAsync(REFRESH_MS);
+    expect(state().forecast).toEqual([{ time: new Date('2026-11-09T15:00:00.000Z'), temp: 26 }]);
+    controller.stop();
+  });
+
+  it('si falla al refrescar, se mantiene la anterior y el tiempo actual se actualiza', async () => {
+    const { api, controller, state } = setup({ temps: [21.4, 22] });
+    await controller.search('Madrid');
+    api.forecastResult = new Error('fallo');
+    await vi.advanceTimersByTimeAsync(REFRESH_MS);
+    expect(state()).toMatchObject({ current: { temp: 22 }, forecast: FORECAST, error: null });
+    controller.stop();
+  });
+
+  it('si falla al buscar otra ciudad, no se muestra la previsión de la anterior', async () => {
+    const { api, controller, state } = setup();
+    await controller.search('Madrid');
+    api.forecastResult = new Error('fallo');
+    await controller.select(BILBAO);
+    expect(state().forecast).toEqual([]);
     controller.stop();
   });
 });

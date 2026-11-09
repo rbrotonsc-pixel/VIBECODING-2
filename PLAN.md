@@ -124,9 +124,9 @@ Todas las pruebas automáticas usan respuestas simuladas de OpenWeatherMap: nunc
 **Objetivo:** añadir la previsión a la gráfica.
 
 **Tareas:**
-- [ ] Pedir la previsión de 5 días / 3 horas y quedarse con los 8 primeros tramos.
-- [ ] Dibujarlos en otro color y separados de los datos medidos.
-- [ ] Refrescar la previsión a la vez que el tiempo actual.
+- [x] Pedir la previsión de 5 días / 3 horas y quedarse con los 8 primeros tramos.
+- [x] Dibujarlos en otro color y separados de los datos medidos.
+- [x] Refrescar la previsión a la vez que el tiempo actual.
 
 **Pruebas:**
 - Unitaria: de una previsión simulada de 40 tramos se toman solo los 8 primeros, con la hora correcta de cada uno.

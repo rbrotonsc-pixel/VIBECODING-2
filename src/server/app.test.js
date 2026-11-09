@@ -55,6 +55,27 @@ describe('rutas del tiempo', () => {
   });
 });
 
+describe('GET /api/forecast', () => {
+  it('pasa las coordenadas y devuelve la previsión', async () => {
+    const calls = [];
+    const weather = {
+      forecast: async (lat, lon) => {
+        calls.push([lat, lon]);
+        return [{ time: '2026-11-09T12:00:00.000Z', temp: 20 }];
+      },
+    };
+    const res = await request(createApp({ checkDb: okDb, weather })).get('/api/forecast?lat=40.4&lon=-3.7');
+    expect(res.status).toBe(200);
+    expect(calls).toEqual([[40.4, -3.7]]);
+    expect(res.body).toEqual([{ time: '2026-11-09T12:00:00.000Z', temp: 20 }]);
+  });
+
+  it('sin coordenadas responde 400', async () => {
+    const res = await request(createApp({ checkDb: okDb, weather: {} })).get('/api/forecast');
+    expect(res.status).toBe(400);
+  });
+});
+
 describe('errores de las rutas', () => {
   const failing = (error) => ({
     geocode: async () => {

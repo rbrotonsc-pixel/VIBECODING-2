@@ -37,6 +37,11 @@ export function createApp({ checkDb, weather, logError = console.error }) {
     res.json(await weather.current(lat, lon));
   });
 
+  app.get('/api/forecast', async (req, res) => {
+    const { lat, lon } = coords(req.query);
+    res.json(await weather.forecast(lat, lon));
+  });
+
   // Nunca se devuelven trazas al navegador: solo un código de error.
   // eslint-disable-next-line no-unused-vars
   app.use((err, _req, res, _next) => {
